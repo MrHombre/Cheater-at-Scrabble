@@ -15,12 +15,11 @@ wordlist = []
 f = open("sowpods.txt", "r")
 for line in f:
     line = line.strip()
-    wordlist.append(list)
-
-f.close()
+    wordlist.append(line)
 
 # Find all of the valid sowpods words that can be made
 # up of the letters in the rack.
+vwords = []
 
 for word in wordlist:
     candidate = True
@@ -28,5 +27,21 @@ for word in wordlist:
     for letter in word:
         if letter not in rack_letters:
             candidate = False
+            break # No need to keep checking letters.
+        else:
+            rack_letters.remove(letter)
     if candidate == True:
-        print(word)
+        # Get the Scrabble scores for each word.
+        total = 0
+        for letter in word:
+            total = total + scores[letter]
+        vwords.append([total, word])
+
+# Print calid words, sorted by Score.
+
+vwords.sort()
+
+for entry in vwords:
+    score = entry[0]
+    word  = entry[1]
+    print(str(score) + " " + word)
